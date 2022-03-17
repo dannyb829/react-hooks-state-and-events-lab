@@ -1,11 +1,21 @@
-import React from "react";
+import React ,{ useState } from "react";
 import Item from "./Item";
 
+
 function ShoppingList({ items }) {
+  const [stateItems, changeItems] = useState(items)
+  function handleFilter(e){
+    if(e.target.value !== 'All') {
+    changeItems(items.filter(item => item.category === e.target.value))
+    }
+    else {
+      changeItems(items)
+    }
+  }
   return (
     <div className="ShoppingList">
       <div className="Filter">
-        <select name="filter">
+        <select onChange={handleFilter} name="filter">
           <option value="All">Filter by category</option>
           <option value="Produce">Produce</option>
           <option value="Dairy">Dairy</option>
@@ -13,7 +23,7 @@ function ShoppingList({ items }) {
         </select>
       </div>
       <ul className="Items">
-        {items.map((item) => (
+        {stateItems.map((item) => (
           <Item key={item.id} name={item.name} category={item.category} />
         ))}
       </ul>
